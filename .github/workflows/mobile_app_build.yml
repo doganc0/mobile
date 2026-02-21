@@ -8,6 +8,8 @@ on:
 jobs:
   android:
     runs-on: ubuntu-latest
+    env:
+      CONFIG_URL: ${{ github.event.client_payload.config_url || secrets.CONFIG_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -20,7 +22,7 @@ jobs:
       - name: Build APK
         run: |
           cd mobile_app
-          flutter build apk --dart-define=CONFIG_URL=${{ secrets.CONFIG_URL }}
+          flutter build apk --dart-define=CONFIG_URL=${{ env.CONFIG_URL }}
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -36,6 +38,8 @@ jobs:
 
   ios:
     runs-on: macos-latest
+    env:
+      CONFIG_URL: ${{ github.event.client_payload.config_url || secrets.CONFIG_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -48,7 +52,7 @@ jobs:
       - name: Build IPA (no codesign)
         run: |
           cd mobile_app
-          flutter build ipa --no-codesign --dart-define=CONFIG_URL=${{ secrets.CONFIG_URL }}
+          flutter build ipa --no-codesign --dart-define=CONFIG_URL=${{ env.CONFIG_URL }}
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
