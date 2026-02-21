@@ -23,6 +23,12 @@ jobs:
           if [ ! -d "android" ] || [ ! -d "ios" ]; then
             flutter create .
           fi
+      - name: Update Kotlin version
+        run: |
+          cd mobile_app/android
+          if [ -f "build.gradle" ]; then
+            sed -i "s/ext.kotlin_version = '.*'/ext.kotlin_version = '1.9.25'/g" build.gradle
+          fi
       - name: Flutter Pub Get
         run: |
           cd mobile_app
@@ -60,6 +66,12 @@ jobs:
           cd mobile_app
           if [ ! -d "android" ] || [ ! -d "ios" ]; then
             flutter create .
+          fi
+      - name: Update Kotlin version
+        run: |
+          cd mobile_app/android
+          if [ -f "build.gradle" ]; then
+            sed -i "s/ext.kotlin_version = '.*'/ext.kotlin_version = '1.9.25'/g" build.gradle
           fi
       - name: Flutter Pub Get
         run: |
