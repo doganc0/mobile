@@ -1,0 +1,10 @@
+.dart_tool/
+.idea/
+.vscode/
+build/
+ios/Pods/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/Flutter.podspec
+android/.gradle/
+android/app/build/
+android/local.properties
