@@ -17,6 +17,12 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.22.0"
+      - name: Ensure Flutter project exists
+        run: |
+          cd mobile_app
+          if [ ! -d "android" ] || [ ! -d "ios" ]; then
+            flutter create .
+          fi
       - name: Flutter Pub Get
         run: |
           cd mobile_app
@@ -49,6 +55,12 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.22.0"
+      - name: Ensure Flutter project exists
+        run: |
+          cd mobile_app
+          if [ ! -d "android" ] || [ ! -d "ios" ]; then
+            flutter create .
+          fi
       - name: Flutter Pub Get
         run: |
           cd mobile_app
