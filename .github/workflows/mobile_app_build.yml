@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CONFIG_URL: ${{ github.event.client_payload.config_url || secrets.CONFIG_URL }}
+      APP_UPLOAD_URL: ${{ secrets.APP_UPLOAD_URL }}
+      APP_UPLOAD_TOKEN: ${{ secrets.APP_UPLOAD_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -29,10 +31,10 @@ jobs:
           name: app-apk
           path: mobile_app/build/app/outputs/flutter-apk/app-release.apk
       - name: Upload APK to Panel
-        if: ${{ secrets.APP_UPLOAD_URL != '' }}
+        if: ${{ env.APP_UPLOAD_URL != '' }}
         run: |
-          curl -X POST "${{ secrets.APP_UPLOAD_URL }}" \
-            -H "X-App-Token: ${{ secrets.APP_UPLOAD_TOKEN }}" \
+          curl -X POST "${{ env.APP_UPLOAD_URL }}" \
+            -H "X-App-Token: ${{ env.APP_UPLOAD_TOKEN }}" \
             -F "apk=@mobile_app/build/app/outputs/flutter-apk/app-release.apk" \
             -F "android_version=${{ github.run_number }}"
 
@@ -40,6 +42,8 @@ jobs:
     runs-on: macos-latest
     env:
       CONFIG_URL: ${{ github.event.client_payload.config_url || secrets.CONFIG_URL }}
+      APP_UPLOAD_URL: ${{ secrets.APP_UPLOAD_URL }}
+      APP_UPLOAD_TOKEN: ${{ secrets.APP_UPLOAD_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -59,10 +63,10 @@ jobs:
           name: app-ipa
           path: mobile_app/build/ios/ipa/*.ipa
       - name: Upload IPA to Panel
-        if: ${{ secrets.APP_UPLOAD_URL != '' }}
+        if: ${{ env.APP_UPLOAD_URL != '' }}
         run: |
           IPA_FILE=$(ls mobile_app/build/ios/ipa/*.ipa | head -n 1)
-          curl -X POST "${{ secrets.APP_UPLOAD_URL }}" \
-            -H "X-App-Token: ${{ secrets.APP_UPLOAD_TOKEN }}" \
+          curl -X POST "${{ env.APP_UPLOAD_URL }}" \
+            -H "X-App-Token: ${{ env.APP_UPLOAD_TOKEN }}" \
             -F "ipa=@${IPA_FILE}" \
             -F "ios_version=${{ github.run_number }}"
